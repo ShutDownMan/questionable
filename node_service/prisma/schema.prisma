@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model form {
+  id                  Int              @id(map: "form_pk") @default(autoincrement())
+  id_store            Int
+  id_coupon_promotion String           @db.Uuid
+  coupon_promotion    coupon_promotion @relation(fields: [id_coupon_promotion], references: [id], map: "coupon_promotion_fk")
+  store               store            @relation(fields: [id_store], references: [id], map: "store_fk")
+  form_question       form_question[]
+}
+
+model form_question {
+  id                 Int                  @id(map: "form_question_pk") @default(autoincrement())
+  inquiry            String
+  id_form            Int
+  form               form                 @relation(fields: [id_form], references: [id], map: "form_fk")
+  user_form_question user_form_question[]
+}
+
+model store {
+  id               Int                @id(map: "store_pk") @default(autoincrement())
+  name             String
+  coupon_promotion coupon_promotion[]
+  form             form[]
+}
+
+model user {
+  id                 String               @id(map: "user_pk") @db.Uuid
+  name               String
+  email              String
+  salt               String
+  password_hash      String?              @db.Char(60)
+  coupon             coupon[]
+  user_form_question user_form_question[]
+}
+
+model user_form_question {
+  id               Int           @id(map: "user_form_pk") @default(autoincrement())
+  answer           String
+  id_user          String        @db.Uuid
+  id_form_question Int
+  form_question    form_question @relation(fields: [id_form_question], references: [id], map: "form_question_fk")
+  user             user          @relation(fields: [id_user], references: [id], map: "user_fk")
+}
+
+model coupon {
+  id                  String           @id(map: "cupon_pk") @db.Uuid
+  code                String?
+  expiry              DateTime?        @db.Timestamptz(6)
+  id_user             String           @db.Uuid
+  id_coupon_promotion String           @db.Uuid
+  coupon_promotion    coupon_promotion @relation(fields: [id_coupon_promotion], references: [id], map: "coupon_promotion_fk")
+  user                user             @relation(fields: [id_user], references: [id], map: "user_fk")
+}
+
+model coupon_promotion {
+  id                String    @id(map: "copon_promotion_pk") @db.Uuid
+  expiry            DateTime? @db.Timestamptz(6)
+  coupon_valid_time DateTime? @db.Time(6)
+  percent_discount  Float?
+  description       String?
+  abs_discount      Float?
+  id_store          Int
+  store             store     @relation(fields: [id_store], references: [id], map: "store_fk")
+  coupon            coupon[]
+  form              form[]
+}
