@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   questionable_postgres:
-    container_name: postgres
+    container_name: questionable_postgres
     image: postgres:alpine
     ports:
       - 5442:${POSTGRES_PORT}
@@ -15,7 +15,7 @@ services:
       - ./postgres_service/postgresql:/var/lib/postgresql
       - ./postgres_service/setup:/docker-entrypoint-initdb.d
   questionable_node:
-    container_name: node
+    container_name: questionable_node
     build: ./node_service
     depends_on:
       - postgres
