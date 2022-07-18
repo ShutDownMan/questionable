@@ -30,8 +30,9 @@ export async function insertCoupon(coupon: Coupon): Promise<any> {
             select: {
                 id: true,
                 expiry: true,
+                code: true,
                 coupon_promotion: true,
-                id_user: true,
+                user: true,
             },
         });
 
