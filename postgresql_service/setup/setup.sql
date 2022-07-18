@@ -7,7 +7,7 @@
 -- object: public."user" | type: TABLE --
 -- DROP TABLE IF EXISTS public."user" CASCADE;
 CREATE TABLE public."user" (
-	id uuid NOT NULL,
+	id text NOT NULL,
 	name text NOT NULL,
 	email text NOT NULL,
 	salt text NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE public.coupon (
 	id uuid NOT NULL,
 	code text,
 	expiry timestamp with time zone,
-	id_user uuid NOT NULL,
+	id_user text NOT NULL,
 	id_coupon_promotion uuid NOT NULL,
 	CONSTRAINT cupon_pk PRIMARY KEY (id)
 );
@@ -93,7 +93,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE public.user_form_question (
 	id serial NOT NULL,
 	answer text NOT NULL,
-	id_user uuid NOT NULL,
+	id_user text NOT NULL,
 	id_form_question integer NOT NULL,
 	CONSTRAINT user_form_pk PRIMARY KEY (id)
 );

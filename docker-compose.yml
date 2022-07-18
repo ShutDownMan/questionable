@@ -12,8 +12,8 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       TZ: America/Sao_Paulo
     volumes:
-      - ./postgres_service/postgresql:/var/lib/postgresql
-      - ./postgres_service/setup:/docker-entrypoint-initdb.d
+      - ./postgresql_service/postgresql:/var/lib/postgresql
+      - ./postgresql_service/setup:/docker-entrypoint-initdb.d
   questionable_node:
     container_name: questionable_node
     build: ./node_service

@@ -32,7 +32,7 @@ model store {
 }
 
 model user {
-  id                 String               @id(map: "user_pk") @db.Uuid
+  id                 String               @id(map: "user_pk")
   name               String
   email              String
   salt               String
@@ -44,7 +44,7 @@ model user {
 model user_form_question {
   id               Int           @id(map: "user_form_pk") @default(autoincrement())
   answer           String
-  id_user          String        @db.Uuid
+  id_user          String
   id_form_question Int
   form_question    form_question @relation(fields: [id_form_question], references: [id], map: "form_question_fk")
   user             user          @relation(fields: [id_user], references: [id], map: "user_fk")
@@ -54,7 +54,7 @@ model coupon {
   id                  String           @id(map: "cupon_pk") @db.Uuid
   code                String?
   expiry              DateTime?        @db.Timestamptz(6)
-  id_user             String           @db.Uuid
+  id_user             String
   id_coupon_promotion String           @db.Uuid
   coupon_promotion    coupon_promotion @relation(fields: [id_coupon_promotion], references: [id], map: "coupon_promotion_fk")
   user                user             @relation(fields: [id_user], references: [id], map: "user_fk")
