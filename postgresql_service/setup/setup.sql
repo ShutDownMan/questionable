@@ -15,7 +15,7 @@ CREATE TABLE public."user" (
 	CONSTRAINT user_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE public."user" OWNER TO postgres;
+ALTER TABLE public."user" OWNER TO adm;
 -- ddl-end --
 
 -- object: public.coupon | type: TABLE --
@@ -29,7 +29,7 @@ CREATE TABLE public.coupon (
 	CONSTRAINT cupon_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE public.coupon OWNER TO postgres;
+ALTER TABLE public.coupon OWNER TO adm;
 -- ddl-end --
 
 -- object: user_fk | type: CONSTRAINT --
@@ -47,7 +47,7 @@ CREATE TABLE public.store (
 	CONSTRAINT store_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE public.store OWNER TO postgres;
+ALTER TABLE public.store OWNER TO adm;
 -- ddl-end --
 
 -- object: public.form | type: TABLE --
@@ -59,7 +59,7 @@ CREATE TABLE public.form (
 	CONSTRAINT form_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE public.form OWNER TO postgres;
+ALTER TABLE public.form OWNER TO adm;
 -- ddl-end --
 
 -- object: store_fk | type: CONSTRAINT --
@@ -78,7 +78,7 @@ CREATE TABLE public.form_question (
 	CONSTRAINT form_question_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE public.form_question OWNER TO postgres;
+ALTER TABLE public.form_question OWNER TO adm;
 -- ddl-end --
 
 -- object: form_fk | type: CONSTRAINT --
@@ -98,7 +98,7 @@ CREATE TABLE public.user_form_question (
 	CONSTRAINT user_form_pk PRIMARY KEY (id)
 );
 -- ddl-end --
-ALTER TABLE public.user_form_question OWNER TO postgres;
+ALTER TABLE public.user_form_question OWNER TO adm;
 -- ddl-end --
 
 -- object: user_fk | type: CONSTRAINT --
@@ -130,7 +130,7 @@ CREATE TABLE public.coupon_promotion (
 -- ddl-end --
 COMMENT ON TABLE public.coupon_promotion IS E'template coupon to give to users';
 -- ddl-end --
-ALTER TABLE public.coupon_promotion OWNER TO postgres;
+ALTER TABLE public.coupon_promotion OWNER TO adm;
 -- ddl-end --
 
 -- object: store_fk | type: CONSTRAINT --

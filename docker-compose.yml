@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PORT: ${POSTGRES_PORT}
-      # TZ: America/Sao_Paulo
+      TZ: America/Sao_Paulo
     volumes:
       - ./postgresql_service/postgresql:/var/lib/postgresql
       - ./postgresql_service/setup:/docker-entrypoint-initdb.d
@@ -28,4 +28,4 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PORT: ${POSTGRES_PORT}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
-      # TZ: America/Sao_Paulo
+      TZ: America/Sao_Paulo
