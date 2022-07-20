@@ -67,7 +67,7 @@ export async function getCouponsByUserID(userId: string): Promise<any> {
                 id: true,
                 expiry: true,
                 coupon_promotion: true,
-                id_user: true,
+                user: true,
             },
         });
 
@@ -87,11 +87,9 @@ export async function getAllCoupons(): Promise<any> {
     try {
         /// get coupons
         const coupons = await prisma.coupon.findMany({
-            select: {
-                id: true,
-                expiry: true,
+            include: {
                 coupon_promotion: true,
-                id_user: true,
+                user: true,
             },
         });
 
