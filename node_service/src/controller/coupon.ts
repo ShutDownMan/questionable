@@ -63,11 +63,12 @@ export async function getCouponsByUserID(userId: string): Promise<any> {
             where: {
                 id_user: userId,
             },
-            select: {
-                id: true,
-                expiry: true,
-                coupon_promotion: true,
-                user: true,
+            include: {
+                coupon_promotion: {
+                    include: {
+                        store: true,
+                    },
+                },
             },
         });
 
