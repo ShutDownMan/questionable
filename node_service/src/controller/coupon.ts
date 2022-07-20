@@ -31,7 +31,16 @@ export async function insertCoupon(coupon: Coupon): Promise<any> {
                 id: true,
                 expiry: true,
                 code: true,
-                coupon_promotion: true,
+                coupon_promotion: {
+                    include: {
+                        store: {
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        }
+                    }
+                },
                 user: true,
             },
         });
