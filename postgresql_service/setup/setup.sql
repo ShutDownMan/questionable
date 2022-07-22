@@ -44,6 +44,9 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE public.store (
 	id serial NOT NULL,
 	name text NOT NULL,
+	email text NOT NULL,
+	password_hash char(60) NOT NULL,
+	salt text NOT NULL,
 	CONSTRAINT store_pk PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -74,6 +77,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE public.form_question (
 	id serial NOT NULL,
 	inquiry text NOT NULL,
+	options json,
 	id_form integer NOT NULL,
 	CONSTRAINT form_question_pk PRIMARY KEY (id)
 );

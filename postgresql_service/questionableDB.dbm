@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
  Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="1.0.0-alpha" use-changelog="false" author="Jedson Gabriel" last-position="0,1214" last-zoom="1.2" max-obj-count="9"
+<dbmodel pgmodeler-ver="1.0.0-alpha" use-changelog="false" author="Jedson Gabriel" last-position="0,0" last-zoom="1.2" max-obj-count="9"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
@@ -24,7 +24,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="user" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
+	<role name="adm"/>
 	<position x="320" y="1380"/>
 	<column name="id" not-null="true">
 		<type name="text" length="0"/>
@@ -48,7 +48,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="coupon" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
+	<role name="adm"/>
 	<position x="280" y="900"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
@@ -86,14 +86,23 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</label>
 </relationship>
 
-<table name="store" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+<table name="store" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="320" y="120"/>
+	<role name="adm"/>
+	<position x="320" y="80"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
 	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="email" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="password_hash" not-null="true">
+		<type name="char" length="60"/>
+	</column>
+	<column name="salt" not-null="true">
 		<type name="text" length="0"/>
 	</column>
 	<constraint name="store_pk" type="pk-constr" table="public.store">
@@ -103,7 +112,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="form" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
+	<role name="adm"/>
 	<position x="1040" y="180"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
@@ -111,6 +120,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="form_pk" type="pk-constr" table="public.form">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_coupon_promotion" index="2"/>
+		<object name="id_store" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="coupon_promotion_fk" index="2"/>
+		<object name="store_fk" index="1"/>
+	</customidxs>
 </table>
 
 <relationship name="store_has_many_form" type="rel1n" layers="0"
@@ -125,19 +144,30 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</label>
 </relationship>
 
-<table name="form_question" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+<table name="form_question" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="1040" y="580"/>
+	<role name="adm"/>
+	<position x="1060" y="600"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
 	<column name="inquiry" not-null="true">
 		<type name="text" length="0"/>
 	</column>
+	<column name="options">
+		<type name="json" length="0"/>
+	</column>
 	<constraint name="form_question_pk" type="pk-constr" table="public.form_question">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+
+	<customidxs object-type="column">
+		<object name="id_form" index="3"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="form_fk" index="1"/>
+	</customidxs>
 </table>
 
 <relationship name="form_has_many_form_question" type="rel1n" layers="0"
@@ -154,8 +184,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="user_form_question" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="940" y="1060"/>
+	<role name="adm"/>
+	<position x="1060" y="1240"/>
 	<column name="id" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -195,7 +225,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="coupon_promotion" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="public"/>
-	<role name="postgres"/>
+	<role name="adm"/>
 	<comment><![CDATA[template coupon to give to users]]></comment>
 	<position x="260" y="400"/>
 	<column name="id" not-null="true">

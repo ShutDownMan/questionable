@@ -18,7 +18,7 @@ services:
     container_name: questionable_node
     build: ./node_service
     depends_on:
-      - postgres
+      - questionable_postgres
     ports:
       - 3000:3000
     environment:
