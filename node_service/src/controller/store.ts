@@ -1,6 +1,7 @@
 import PrismaGlobal from "../prisma";
 import { Store } from "../model/store";
 import { hash, genSalt } from "bcryptjs";
+import { FormReport, question_report } from "../model/form";
 
 export async function insertStore(store: Store): Promise<any> {
     const prisma = PrismaGlobal.getInstance().prisma;
@@ -9,7 +10,7 @@ export async function insertStore(store: Store): Promise<any> {
     let salt = await genSalt(10);
 
     /// hash password
-    let password_hash= await hash(store.password, salt);
+    let password_hash = await hash(store.password, salt);
 
     try {
         /// create store
@@ -80,6 +81,101 @@ export async function getAllStores(): Promise<any> {
 
         /// return stores
         return stores;
+
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+/// route to generate a report of all forms from a store
+export async function getFormsReportFromStore(storeId: number): Promise<any> {
+    const prisma = PrismaGlobal.getInstance().prisma;
+
+    try {
+        /// get forms
+        const forms = await prisma.form.findMany({
+            where: {
+                id_store: storeId,
+            },
+            select: {
+                id: true,
+                coupon_promotion: true,
+                form_question: {
+                    select: {
+                        id: true,
+                        inquiry: true,
+                        options: true,
+                        user_form_question: true,
+                    },
+                },
+                store: true,
+            },
+        });
+
+        /// generate report
+        let form_reports: FormReport[] = [];
+
+        /// loop through forms
+        for (let form of forms) {
+            /// loop through form questions
+            for (let form_question of form.form_question) {
+                /// if no options, skip
+                if (!form_question.options) continue;
+
+                /// get answers
+                let answers = form_question.user_form_question;
+
+                /// initialize question report
+                let question_reports: question_report[] = [];
+
+                let options: string[] = form_question.options as string[];
+
+                /// loop through options
+                for (let option of options) {
+                    question_reports.push({
+                        count: 0,
+                        percentage: 0,
+                    });
+                }
+
+                /// loop through answers
+                for (let answer of answers) {
+                    /// get answer index
+                    let answer_index = Number(answer.answer);
+
+                    /// increment count
+                    question_reports[answer_index].count++;
+                }
+
+                /// calculate percentages
+                for (let question_report_item of question_reports) {
+                    /// check if answer count is 0
+                    if (answers.length === 0) {
+                        question_report_item.percentage = 0;
+                    } else {
+                        question_report_item.percentage =
+                            question_report_item.count / answers.length;
+                    }
+                }
+
+                /// add question report to form report
+                form_reports.push({
+                    form_id: form.id,
+                    questions: [
+                        {
+                            inquiry: form_question.inquiry,
+                            options: options,
+                            answers: question_reports,
+                        },
+                    ],
+                });
+            }
+
+        }
+
+        /// return forms
+        return { reports: form_reports };
 
     } catch (error) {
         console.log(error);

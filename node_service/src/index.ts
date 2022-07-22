@@ -3,7 +3,7 @@ import { allCouponsGetHandler, cuponGetHandler, cuponPostHandler } from './route
 import { couponPromotionsGetHandler, cuponPromotionPostHandler } from './routes/coupon_promotion';
 import { dummyCouponPostHandler, dummyCouponPromotionPostHandler, dummyStorePostHandler, dummyUserPostHandler } from './routes/dummy';
 import { formPostHandler, formResponsePostHandler, formsGetHandler } from './routes/form';
-import { storeFormsGetHandler, storePostHandler, storesGetHandler } from './routes/store';
+import { storeFormsGetHandler, storeFormsReportGetHandler, storePostHandler, storesGetHandler } from './routes/store';
 import { userPostHandler, usersGetHandler } from './routes/user';
 
 const app = express();
@@ -80,3 +80,9 @@ app.get('/coupon_promotions', couponPromotionsGetHandler);
 
 /// route to get all coupons
 app.get('/coupons', allCouponsGetHandler);
+
+/* store dashboard routes */
+
+/// route to get forms report of a store
+app.get('/store/:storeID/forms/report', storeFormsReportGetHandler);
+

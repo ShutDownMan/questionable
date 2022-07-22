@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { assert } from 'superstruct'
-import { getAllStores, getFormsFromStore, insertStore } from "../controller/store";
+import { getAllStores, getFormsFromStore, getFormsReportFromStore, insertStore } from "../controller/store";
 import { StorePostValidationModel } from "../model/store";
 
 export async function storePostHandler(req: Request, res: Response, next: Function): Promise<void> {
@@ -70,6 +70,33 @@ export async function storesGetHandler(req: Request, res: Response, next: Functi
     /// check if stores is null
     if (stores === null) {
         res.status(500).send('Error getting stores');
+        return;
+    }
+
+    /// send response
+    res.status(200).send(stores);
+}
+
+/// route to get forms report of a store
+export async function storeFormsReportGetHandler(req: Request, res: Response, next: Function): Promise<void> {
+    console.debug('Handling Store GET request');
+
+    /// check if storeID is in req.query
+    if (!req.params.storeID) {
+        res.status(400).send('Missing storeID in request');
+        return;
+    }
+
+    /// get user id from req.params
+    let storeID = Number(req.params.storeID);
+    console.debug('storeID:', storeID);
+
+    /// call controller function
+    let stores = await getFormsReportFromStore(storeID);
+
+    /// check if stores is null
+    if (stores === null) {
+        res.status(500).send('Error getting forms from store');
         return;
     }
 

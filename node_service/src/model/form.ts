@@ -26,3 +26,19 @@ export const FormResponsePostValidationModel = object({
 export type FormResponse = Infer<typeof FormResponsePostValidationModel> & {
     id?: string;
 };
+
+export interface question_report {
+    count: number;
+    percentage: number
+};
+
+export interface FormReport {
+    form_id: number;
+    questions: [
+        {
+            inquiry: string;
+            options: string[];
+            answers: question_report[];
+        }
+    ]
+}
