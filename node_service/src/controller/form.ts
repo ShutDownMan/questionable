@@ -72,7 +72,7 @@ export async function processFormResponse(formResponse: FormResponse): Promise<a
         let code = `${formResponse.user_id}-${formResponse.promotion_id}-${moment().format("YYYYMMDDHH")}`;
 
         /// check if code already exists in database
-        let coupon_code = await prisma.coupon.findFirstOrThrow({
+        let coupon_code = await prisma.coupon.findFirst({
             where: {
                 code,
             },
