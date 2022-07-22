@@ -141,6 +141,7 @@ export async function getFormsReportFromStore(storeId: number): Promise<any> {
 
                 /// loop through answers
                 for (let answer of answers) {
+                    console.log(answer);
                     /// get answer index
                     let answer_index = Number(answer.answer);
 
