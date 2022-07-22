@@ -96,6 +96,8 @@ export async function insertDummyStore(): Promise<any> {
         /// create store
         const newStore = await insertStore({
             name: faker.company.companyName(),
+            email: faker.internet.email(),
+            password: faker.internet.password(),
             // address: faker.address.streetAddress(),
         });
 

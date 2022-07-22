@@ -5,6 +5,7 @@ export const FormPostValidationModel = object({
     coupon_promotion_id: string(),
     questions: array(object({
         inquiry: string(),
+        options: array(string()),
     })),
 });
 
@@ -18,7 +19,7 @@ export const FormResponsePostValidationModel = object({
     user_id: string(),
     answers: array(object({
         question_id: number(),
-        answer: string(),
+        answer: union([string(), number()]),
     })),
 });
 

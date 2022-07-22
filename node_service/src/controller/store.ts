@@ -1,8 +1,15 @@
 import PrismaGlobal from "../prisma";
 import { Store } from "../model/store";
+import { hash, genSalt } from "bcryptjs";
 
 export async function insertStore(store: Store): Promise<any> {
     const prisma = PrismaGlobal.getInstance().prisma;
+
+    /// generate salt
+    let salt = await genSalt(10);
+
+    /// hash password
+    let password_hash= await hash(store.password, salt);
 
     try {
         /// create store
@@ -10,6 +17,9 @@ export async function insertStore(store: Store): Promise<any> {
             data: {
                 // id: randomUUID(),
                 name: store.name,
+                email: store.email,
+                password_hash: password_hash,
+                salt: salt,
                 // address: store.address,
             },
             select: {

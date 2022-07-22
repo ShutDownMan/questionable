@@ -19,6 +19,7 @@ model form {
 model form_question {
   id                 Int                  @id(map: "form_question_pk") @default(autoincrement())
   inquiry            String
+  options            Json?                @db.Json
   id_form            Int
   form               form                 @relation(fields: [id_form], references: [id], map: "form_fk")
   user_form_question user_form_question[]
@@ -27,6 +28,9 @@ model form_question {
 model store {
   id               Int                @id(map: "store_pk") @default(autoincrement())
   name             String
+  email            String
+  password_hash    String
+  salt             String
   coupon_promotion coupon_promotion[]
   form             form[]
 }

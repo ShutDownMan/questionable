@@ -26,6 +26,7 @@ export async function insertForm(form: Form): Promise<any> {
                     create: form.questions.map(question => {
                         return {
                             inquiry: question.inquiry,
+                            options: question.options,
                         };
                     }),
                 }
@@ -55,7 +56,7 @@ export async function processFormResponse(formResponse: FormResponse): Promise<a
                 return {
                     id_user: formResponse.user_id,
                     id_form_question: answer.question_id,
-                    answer: answer.answer,
+                    answer: String(answer.answer),
                 }
             }),
         });
@@ -67,11 +68,26 @@ export async function processFormResponse(formResponse: FormResponse): Promise<a
             },
         });
 
+        /// create code
+        let code = `${formResponse.user_id}-${formResponse.promotion_id}-${moment().format("YYYYMMDDHH")}`;
+
+        /// check if code already exists in database
+        let coupon_code = await prisma.coupon.findFirstOrThrow({
+            where: {
+                code,
+            },
+        });
+
+        if(coupon_code) {
+            /// code already exists
+            return null;
+        }
+
         // create coupon for user
         const newCoupon = await prisma.coupon.create({
             data: {
                 id: randomUUID(),
-                code: `${faker.random.alphaNumeric(4)}-${faker.random.alphaNumeric(4)}`,
+                code: code,
                 ...(coupon_promotion.coupon_valid_time && {
                     expiry: moment().add(coupon_promotion.coupon_valid_time.getDate()).toDate()
                 }),
