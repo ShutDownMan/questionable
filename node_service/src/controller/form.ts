@@ -130,7 +130,13 @@ export async function getForms(): Promise<any> {
                 id: true,
                 store: true,
                 coupon_promotion: true,
-                form_question: true,
+                form_question: {
+                    select: {
+                        id: true,
+                        inquiry: true,
+                        options: true,
+                    }
+                },
             },
         });
 
