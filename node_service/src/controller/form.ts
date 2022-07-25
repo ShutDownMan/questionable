@@ -135,6 +135,7 @@ export async function getForms(): Promise<any> {
                         id: true,
                         inquiry: true,
                         options: true,
+                        id_form: true,
                     }
                 },
             },
