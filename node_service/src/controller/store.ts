@@ -142,13 +142,13 @@ export async function getFormsReportFromStore(storeId: number): Promise<any> {
 
                 /// loop through answers
                 for (let answer of answers) {
-                    console.log(answer);
+                    // console.log(answer);
                     /// get answer index
                     let answer_index = parseInt(answer.answer);
 
-                    /// if answer is not a number, skip
+                    /// if answer is not a number or index not in range, skip
                     // TODO: generate a different report based on the question type
-                    if (isNaN(answer_index)) continue;
+                    if (isNaN(answer_index) || !question_reports[answer_index]) continue;
 
                     /// increment count
                     question_reports[answer_index].count++;
