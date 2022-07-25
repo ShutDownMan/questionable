@@ -134,7 +134,7 @@ export async function getFormsReportFromStore(storeId: number): Promise<any> {
                 /// loop through options
                 for (let option of options) {
                     question_reports.push({
-                        question_id: form_question.id,
+                        answer_label: option,
                         count: 0,
                         percentage: 0,
                     });

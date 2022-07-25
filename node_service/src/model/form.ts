@@ -28,7 +28,7 @@ export type FormResponse = Infer<typeof FormResponsePostValidationModel> & {
 };
 
 export interface question_report {
-    question_id: number;
+    answer_label: string;
     count: number;
     percentage: number
 };
