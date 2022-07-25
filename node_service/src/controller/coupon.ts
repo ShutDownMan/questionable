@@ -116,10 +116,10 @@ export async function deleteCoupon(couponId: string): Promise<any> {
         });
 
         /// return deleted coupon
-        return deletedCoupon;
+        return true;
 
     } catch (error) {
         console.log(error);
-        return null;
+        return false;
     }
 }

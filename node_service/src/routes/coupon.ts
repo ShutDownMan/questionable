@@ -94,12 +94,12 @@ export async function couponDeleteHandler(req: Request, res: Response, next: Fun
     /// call controller function
     let deletedCoupon = await deleteCoupon(couponID);
 
-    /// check if deletedCoupon is null
-    if (deletedCoupon === null) {
+    /// check if deletedCoupon was deleted
+    if (deletedCoupon) {
         res.status(500).send('Error deleting coupon');
         return;
     }
 
     /// send response
-    res.status(200).send(deletedCoupon);
+    res.status(200);
 }
