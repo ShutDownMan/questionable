@@ -102,3 +102,24 @@ export async function getAllCoupons(): Promise<any> {
         return null;
     }
 }
+
+/// function to delete a coupon
+export async function deleteCoupon(couponId: string): Promise<any> {
+    const prisma = PrismaGlobal.getInstance().prisma;
+
+    try {
+        /// delete coupon
+        const deletedCoupon = await prisma.coupon.delete({
+            where: {
+                id: couponId,
+            },
+        });
+
+        /// return deleted coupon
+        return deletedCoupon;
+
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}

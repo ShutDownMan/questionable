@@ -86,3 +86,7 @@ app.get('/coupons', allCouponsGetHandler);
 /// route to get forms report of a store
 app.get('/store/:storeID/forms/report', storeFormsReportGetHandler);
 
+/* delete routes */
+
+/// route to delete a coupon
+app.delete('/coupon/:couponID', cuponDeleteHandler);

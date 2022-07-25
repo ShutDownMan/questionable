@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { assert } from 'superstruct'
-import { getAllCoupons, getCouponsByUserID, insertCoupon } from "../controller/coupon";
+import { deleteCoupon, getAllCoupons, getCouponsByUserID, insertCoupon } from "../controller/coupon";
 import { CouponPostValidationModel } from "../model/coupon";
 
 export async function cuponPostHandler(req: Request, res: Response, next: Function): Promise<void> {
@@ -75,4 +75,31 @@ export async function allCouponsGetHandler(req: Request, res: Response, next: Fu
 
     /// send response
     res.status(200).send(coupons);
+}
+
+/// route to delete coupon
+export async function couponDeleteHandler(req: Request, res: Response, next: Function): Promise<void> {
+    console.debug('Handling coupon DELETE request');
+
+    /// check if couponID is in req.params
+    if (!req.params.couponID) {
+        res.status(400).send('Missing couponID in request');
+        return;
+    }
+
+    /// get coupon id from req.params
+    let couponID = req.params.couponID;
+    console.debug('couponID:', couponID);
+
+    /// call controller function
+    let deletedCoupon = await deleteCoupon(couponID);
+
+    /// check if deletedCoupon is null
+    if (deletedCoupon === null) {
+        res.status(500).send('Error deleting coupon');
+        return;
+    }
+
+    /// send response
+    res.status(200).send(deletedCoupon);
 }
