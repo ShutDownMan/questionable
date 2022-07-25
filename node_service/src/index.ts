@@ -1,5 +1,5 @@
 import express from 'express';
-import { allCouponsGetHandler, cuponGetHandler, cuponPostHandler } from './routes/coupon';
+import { allCouponsGetHandler, couponDeleteHandler, cuponGetHandler, cuponPostHandler } from './routes/coupon';
 import { couponPromotionsGetHandler, cuponPromotionPostHandler } from './routes/coupon_promotion';
 import { dummyCouponPostHandler, dummyCouponPromotionPostHandler, dummyStorePostHandler, dummyUserPostHandler } from './routes/dummy';
 import { formPostHandler, formResponsePostHandler, formsGetHandler } from './routes/form';
@@ -89,4 +89,4 @@ app.get('/store/:storeID/forms/report', storeFormsReportGetHandler);
 /* delete routes */
 
 /// route to delete a coupon
-app.delete('/coupon/:couponID', cuponDeleteHandler);
+app.delete('/coupon/:couponID', couponDeleteHandler);
