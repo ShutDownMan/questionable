@@ -5,9 +5,11 @@ import { dummyCouponPostHandler, dummyCouponPromotionPostHandler, dummyStorePost
 import { formPostHandler, formResponseDeleteHandler, formResponsePostHandler, formsGetHandler } from './routes/form';
 import { storeFormsGetHandler, storeFormsReportGetHandler, storePostHandler, storesGetHandler } from './routes/store';
 import { userPostHandler, usersGetHandler } from './routes/user';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.listen(3000, () => {
     console.log('The application is listening on port 3000!');

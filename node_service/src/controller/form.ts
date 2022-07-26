@@ -162,9 +162,9 @@ export async function deleteFormResponse(userId: string): Promise<any> {
         });
 
         /// return deleted form response
-        return deletedFormResponse;
+        return true;
     } catch (error) {
         console.log(error);
-        return null;
+        return false;
     }
 }
