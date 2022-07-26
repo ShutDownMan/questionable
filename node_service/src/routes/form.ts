@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { assert } from 'superstruct'
-import { getForms, insertForm, processFormResponse } from "../controller/form";
+import { deleteFormResponse, getForms, insertForm, processFormResponse } from "../controller/form";
 import { FormPostValidationModel, FormResponsePostValidationModel } from "../model/form";
 
 export async function formPostHandler(req: Request, res: Response, next: Function): Promise<void> {
@@ -77,4 +77,31 @@ export async function formsGetHandler(req: Request, res: Response, next: Functio
 
     /// send response
     res.status(200).send(forms);
+}
+
+/// route to delete a form response
+export async function formResponseDeleteHandler(req: Request, res: Response, next: Function): Promise<void> {
+    console.debug('Handling Form Response DELETE request');
+
+    /// check if userId is in req.params
+    if (!req.params.userId) {
+        res.status(400).send('Missing userId in request');
+        return;
+    }
+
+    /// get user id from req.params
+    let userId = req.params.userId;
+    console.debug('userId:', userId);
+
+    /// call controller function
+    let formResponse = await deleteFormResponse(userId);
+
+    /// check if formResponse is null
+    if (formResponse === null) {
+        res.status(500).send('Error deleting form response');
+        return;
+    }
+
+    /// send response
+    res.status(200);
 }

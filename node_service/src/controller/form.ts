@@ -78,7 +78,7 @@ export async function processFormResponse(formResponse: FormResponse): Promise<a
             },
         });
 
-        if(coupon_code) {
+        if (coupon_code) {
             /// code already exists
             return null;
         }
@@ -143,6 +143,26 @@ export async function getForms(): Promise<any> {
 
         /// return all forms
         return forms;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+/// function to delete form response
+export async function deleteFormResponse(userId: string): Promise<any> {
+    let prisma = PrismaGlobal.getInstance().prisma;
+
+    try {
+        /// delete form response using user id and form response id
+        let deletedFormResponse = await prisma.user_form_question.deleteMany({
+            where: {
+                id_user: userId,
+            }
+        });
+
+        /// return deleted form response
+        return deletedFormResponse;
     } catch (error) {
         console.log(error);
         return null;
