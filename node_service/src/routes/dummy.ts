@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { assert } from 'superstruct'
-import { insertDummyCoupon, insertDummyCouponPromotion, insertDummyStore, insertDummyUser } from "../controller/dummy";
+import { insertDummyCoupon, insertDummyCouponPromotion, insertDummyFormResponse, insertDummyStore, insertDummyUser } from "../controller/dummy";
+import { processFormResponse } from "../controller/form";
 
 /// route to create a dummy user, no validation
 export async function dummyUserPostHandler(req: Request, res: Response, next: Function): Promise<void> {
@@ -68,4 +69,21 @@ export async function dummyStorePostHandler(req: Request, res: Response, next: F
 
     /// send response
     res.status(202).send(newStore);
+}
+
+/// route to create a dummy form response
+export async function dummyFormResponsePostHandler(req: Request, res: Response, next: Function): Promise<void> {
+    console.debug('Handling Dummy Form Response POST request');
+
+    /// call controller function
+    let newCoupon = await insertDummyFormResponse();
+
+    /// check if newCoupon is null
+    if (newCoupon === null) {
+        res.status(500).send('Error processing form response');
+        return;
+    }
+
+    /// send response
+    res.status(202).send(newCoupon);
 }

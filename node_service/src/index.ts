@@ -1,7 +1,7 @@
 import express from 'express';
 import { allCouponsGetHandler, couponDeleteHandler, cuponGetHandler, cuponPostHandler } from './routes/coupon';
 import { couponPromotionsGetHandler, cuponPromotionPostHandler } from './routes/coupon_promotion';
-import { dummyCouponPostHandler, dummyCouponPromotionPostHandler, dummyStorePostHandler, dummyUserPostHandler } from './routes/dummy';
+import { dummyCouponPostHandler, dummyCouponPromotionPostHandler, dummyFormResponsePostHandler, dummyStorePostHandler, dummyUserPostHandler } from './routes/dummy';
 import { formPostHandler, formResponseDeleteHandler, formResponsePostHandler, formsGetHandler } from './routes/form';
 import { storeFormsGetHandler, storeFormsReportGetHandler, storePostHandler, storesGetHandler } from './routes/store';
 import { userPostHandler, usersGetHandler } from './routes/user';
@@ -65,6 +65,9 @@ app.post('/dummy/store', dummyStorePostHandler);
 
 // /// route to create a dummy form
 // app.post('/dummy/form', dummyFormPostHandler);
+
+// route to create a dummy form response
+app.post('/dummy/form_response', dummyFormResponsePostHandler);
 
 /* admin routes */
 

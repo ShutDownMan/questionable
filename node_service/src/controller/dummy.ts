@@ -2,10 +2,11 @@ import PrismaGlobal from "../prisma";
 import { faker } from '@faker-js/faker';
 import { insertUser } from "./user";
 import { insertCoupon } from "./coupon";
-import { coupon_promotion, form, store, user } from "@prisma/client";
+import { coupon_promotion, form, form_question, store, user } from "@prisma/client";
 import { insertCouponPromotion } from "./coupon_promotion";
 import moment from "moment";
 import { insertStore } from "./store";
+import { processFormResponse } from "./form";
 
 /// function to create a dummy user using faker
 export async function insertDummyUser(): Promise<any> {
@@ -103,6 +104,66 @@ export async function insertDummyStore(): Promise<any> {
 
         /// return newly created store
         return newStore;
+
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+/// function to create a dummy form response using faker
+export async function insertDummyFormResponse(): Promise<any> {
+    const prisma = PrismaGlobal.getInstance().prisma;
+
+    try {
+        /// select users that have not responded to any form
+        let users = await prisma.$queryRaw<user[]>`SELECT * FROM "user" WHERE "id" NOT IN (SELECT "id_user" FROM "user_form_question")`;
+
+        if (users.length === 0) {
+            return null;
+        }
+
+        /// get random user from those
+        let randomUser = users[Math.floor(Math.random() * users.length)];
+
+        /// get random promotion from database
+        let randomPromotion = await prisma.$queryRaw<coupon_promotion[]>`SELECT * FROM "coupon_promotion" ORDER BY RANDOM() LIMIT 1`
+            .then(res => res[0]);
+
+        console.log("randomPromotion.id:", randomPromotion.id);
+
+        /// get random form by promotion id from database
+        let randomForm = await prisma.$queryRaw<form[]>`SELECT * FROM "form" WHERE "id_coupon_promotion"::TEXT = ${randomPromotion.id} ORDER BY RANDOM() LIMIT 1`
+            .then(res => res[0]);
+
+        console.log("randomForm.id:", randomForm.id);
+
+        /// get form questions by form id from database
+        let formQuestions = await prisma.$queryRaw<form_question[]>`SELECT * FROM "form_question" WHERE "id_form" = ${randomForm.id}`;
+
+        let randomAnswers: {
+            question_id: number;
+            answer: string | number;
+        }[] = [];
+
+        /// loop through each question and select a random answer from the list of options
+        for (let question of formQuestions) {
+            randomAnswers.push({
+                question_id: question.id,
+                answer: Math.floor(Math.random() * (question.options as string[]).length),
+            });
+        }
+
+        /// create form response
+        const newFormResponse = await processFormResponse({
+            user_id: randomUser.id,
+            form_id: randomForm.id,
+            promotion_id: randomPromotion.id,
+            answers: randomAnswers,
+        });
+
+        /// return newly created form response
+        return newFormResponse;
 
     } catch (error) {
         console.log(error);
